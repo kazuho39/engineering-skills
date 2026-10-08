@@ -52,6 +52,7 @@ description: 'ユーザーが入力した開発内容をもとに、仕様駆動
 
 どのような技術で実現するかを定義する設計文書。次を含めます。
 
+- **開発概要（要約）と「変更の有無」表**（新規API／既存API変更／DBマイグレーション／画面／クラスの有無と、詳細へのリンク）
 - アーキテクチャ設計
 - API設計（エンドポイント、I/O定義）
 - データモデル設計（ER図、スキーマ）
@@ -59,10 +60,24 @@ description: 'ユーザーが入力した開発内容をもとに、仕様駆動
 - 主要フローの詳細設計（シーケンス図）
 - エラーハンドリング設計
 - セキュリティ設計
-- **実装方針の選定と比較**（推奨案、代替案、トレードオフ）
 - 影響範囲
 
+クラス設計・テスト設計・実装方針の選定（ADR）・オープンクエスチョンは**別ファイルに分けます**（次節）。
+
 詳細テンプレート: [design-template](references/design-template.md)
+
+### 3. 分離する文書（読みやすさのためのファイル構成）
+
+入口の `specification.md` / `design.md` を短く保つため、詳細は役割ごとに別ファイルへ分けます。ファイル名は `<親文書>-<種別>.md` で、どちらの文書のものかを名前で示します。**該当がなければファイルを作りません。**
+
+| ファイル | 内容 | テンプレート |
+|---------|------|-------------|
+| `design-class-design.md` | 作るクラスのファイルツリー＋ファイルごとの役割・メソッド・契約 | [design-class-design-template](references/design-class-design-template.md) |
+| `design-test-plan.md` | 作るテストのファイルツリー＋ファイルごとのケース。クラス設計と対応付ける | [design-test-plan-template](references/design-test-plan-template.md) |
+| `design-adr.md` / `specification-adr.md` | 実装方針・意思決定の記録（比較・理由・再検討トリガー） | [adr-template](references/adr-template.md) |
+| `design-open-questions.md` / `specification-open-questions.md` | 未確定事項・PoC・決定済みの経緯 | [open-questions-template](references/open-questions-template.md) |
+
+構成の定義（入口の書き方、「変更の有無」表の固定項目、情報の置き場所）: [document-structure](references/document-structure.md)
 
 ## プロジェクト設計ハブ（差し込み口）
 
@@ -73,8 +88,8 @@ description: 'ユーザーが入力した開発内容をもとに、仕様駆動
 | 場面 | ハブに確認すること | ハブがないときの既定 |
 |------|-------------------|--------------------|
 | design の技術スタック欄 | 採用言語・フレームワーク・DB・制約 | ユーザーに確認して記入する |
-| クラス・メソッド設計 | 使う設計スキル・手順（契約表、レイヤー配置、例外規約など） | `contract-first-design` スキルがあれば使う。なければ、純粋部分と副作用部分の仕分けと、主要クラスの契約表（事前条件・事後条件・不変条件・副作用）を最小項目として含める |
-| テスト設計 | テスト規約・使うスキル | 契約表の各行から1ケース以上のテストを導く |
+| クラス・メソッド設計（`design-class-design.md`） | 使う設計スキル・手順（契約表、レイヤー配置、例外規約など） | `contract-first-design` スキルがあれば使う。なければ、純粋部分と副作用部分の区分と、メソッドごとの契約（事前条件・事後条件・不変条件・副作用）を最小項目として含める |
+| テスト設計（`design-test-plan.md`） | テスト規約・使うスキル | クラス設計の契約の各行から1ケース以上のテストを導く |
 | API・認証・命名の規約 | エンドポイント命名、認証方式、エラー形式 | design-template の中立な例に従う |
 | ドメイン用語の置き場 | 用語集（ユビキタス言語）の場所と更新ルール | 用語が増えたらユーザーに置き場を確認する |
 | 成果物の出力先 | 既定以外の出力先 | 次節の既定の出力先 |
@@ -83,7 +98,7 @@ description: 'ユーザーが入力した開発内容をもとに、仕様駆動
 
 ## 成果物の出力先
 
-このスキルでは、`specification.md`、`design.md` を作成する際、**必ずリポジトリ内**に出力します。
+このスキルでは、`specification.md`、`design.md` と、それに付随する分離文書を作成する際、**必ずリポジトリ内**に出力します。
 
 ### デフォルト出力先（リポジトリルートからの相対パス）
 
@@ -91,6 +106,9 @@ description: 'ユーザーが入力した開発内容をもとに、仕様駆動
 
 - `specs/YYYY-MM-DD_<feature-name>/specification.md`
 - `specs/YYYY-MM-DD_<feature-name>/design.md`
+- `specs/YYYY-MM-DD_<feature-name>/design-class-design.md`、`design-test-plan.md`（通常は常に作成）
+- `specs/YYYY-MM-DD_<feature-name>/design-adr.md`、`design-open-questions.md`（該当があるときのみ）
+- `specs/YYYY-MM-DD_<feature-name>/specification-adr.md`、`specification-open-questions.md`（要件側に該当があるときのみ）
 - `specs/YYYY-MM-DD_<feature-name>/dig-log.md`（`dig` スキルによる質問の記録。dig を使った場合のみ作成）
 
 ### パス構成ルール
@@ -169,6 +187,7 @@ description: 'ユーザーが入力した開発内容をもとに、仕様駆動
 - 受け入れ条件は**Given-When-Then形式**または**具体的な振る舞い例**で検証可能な表現にする
 - スコープ外を必ず明記する
 - **成功メトリクス（計測可能な指標）**を含める
+- 先頭に**要約**を置く（[specification-template](references/specification-template.md) の冒頭）。要件側の意思決定・未確定事項に該当があれば、`specification-adr.md` / `specification-open-questions.md` に分ける（[document-structure](references/document-structure.md)）
 
 **🔍 specification レビューゲート**
 
@@ -191,7 +210,10 @@ design に進む前に、以下を確認してユーザーに合意を求めて�
 - データモデル設計はテーブル定義、カラム、制約を明記
 - 推奨実装方針を1つ明確に示す
 - 少なくとも1つの代替案を示し、**トレードオフ**を明記する
-- **クラス・メソッド設計は、`project-design-hub` が示す設計スキル・規約に従う**。示されなければ、`contract-first-design` スキルがあればそれを使い、なければ最小項目で進める（「[プロジェクト設計ハブ](#プロジェクト設計ハブ差し込み口)」参照）。いずれの場合も、純粋部分と副作用部分の仕分け、主要クラスの契約表（事前条件・事後条件・不変条件・副作用）を design の「5. 主要フローの詳細設計」に含める
+- **`design.md` の先頭に「開発概要（要約）」と「変更の有無」表を置く**。新規API／既存APIの定義変更／DBマイグレーション／認証・認可／画面／新規クラス／既存クラスの変更／影響範囲を、**あり・なしを必ず明示**し、「なし」は理由を1行、「あり」は該当見出しへのリンクを付ける（[document-structure](references/document-structure.md)）
+- **クラス・メソッド設計は `design-class-design.md` に分けて書く**。作るクラスを**ファイルツリー**で示し、**ファイルごとの見出し**に役割・メソッドの契約（事前条件・事後条件・不変条件・副作用）を書く。設計スキル・規約は `project-design-hub` が示すものに従い、示されなければ `contract-first-design` スキルがあればそれを使い、なければ最小項目で進める（「[プロジェクト設計ハブ](#プロジェクト設計ハブ差し込み口)」参照）
+- **テスト設計は `design-test-plan.md` に分けて書く**。クラス設計と同じ形（ファイルツリー＋ファイルごとの見出し）で、各テストファイルの「対象」をクラス設計のクラスに対応付け、最後にクラスからテストへの逆引き表を置く
+- 実装方針の選定は `design-adr.md`、未確定事項は `design-open-questions.md` に分け、`design.md` には結論と件数だけを書く
 - 既存アーキテクチャや運用への影響を書く
 - **前提条件と再検討トリガー**を明記
 
@@ -202,7 +224,9 @@ design に進む前に、以下を確認してユーザーに合意を求めて�
 - [ ] 推奨実装方針と代替案の比較・トレードオフが明記されている
 - [ ] API仕様・データモデル・画面設計が十分な具体性で記載されている
 - [ ] 既存システムへの影響範囲が明記されている
-- [ ] 純粋部分と副作用部分の仕分けと、主要クラスの契約表が記載されている
+- [ ] design.md の先頭に「開発概要」と「変更の有無」表（固定項目、あり・なし、詳細へのリンク）がある
+- [ ] `design-class-design.md` に、ファイルツリーと、ファイルごとの契約（事前条件・事後条件・不変条件・副作用）、純粋／副作用の区分がある
+- [ ] `design-test-plan.md` に、ファイルツリーと、クラス設計に対応付けたテストがある
 - [ ] 前提条件と再検討トリガーが記載されている
 - [ ] ユーザーが「この design で実装に進んでよい」と合意した
 
@@ -212,7 +236,9 @@ design に進む前に、以下を確認してユーザーに合意を求めて�
 
 - specification と design に矛盾がないか
 - specification の受け入れ条件が design の設計に反映されているか
-- 契約表の各行に対応するテストケースを導けるか（導けない行は契約が曖昧）
+- クラス設計の全クラスについて、`design-test-plan.md` の逆引き表に対応するテストがあるか（導けない行は契約が曖昧）
+- 入口の文書の記述（件数・リンク・「変更の有無」）が、分離したファイルの内容と食い違っていないか
+- 同じ情報を複数のファイルに書いていないか（置き場所は [document-structure](references/document-structure.md) の表に従う）
 - 不確実性が残る箇所に調査 or PoC（概念実証）の方針が design に記載されているか
 
 ## 推奨する会話の進め方
@@ -295,7 +321,8 @@ specification / design は**生きたドキュメント**として扱います�
 - 実装中に判明した仕様の変更は、該当ファイルに追記・更新する
 - 大きな方針変更があった場合は、**変更履歴セクション**を追加する
 - 技術的な意思決定の変更は design に記録する
-- 重要な技術的判断は `design.md` のセクション9（ADR）に記録し、**なぜその選択をしたかを未来の自分や他者が追跡できる状態を維持する**
+- 重要な技術的判断は `design-adr.md`（要件側の判断は `specification-adr.md`）に記録し、**なぜその選択をしたかを未来の自分や他者が追跡できる状態を維持する**。`design.md` のセクション9には結論の表だけを置く
+- 変更した内容は、[document-structure](references/document-structure.md) の「情報の置き場所」に従って該当ファイルを更新する（入口の文書の件数・リンクも合わせる）
 
 ### 変更履歴の例
 
@@ -312,6 +339,8 @@ specification / design は**生きたドキュメント**として扱います�
 
 - [specification-template](references/specification-template.md)
 - [design-template](references/design-template.md)
+- [document-structure](references/document-structure.md) — ファイル構成と各ファイルの書き方の定義
+- [design-class-design-template](references/design-class-design-template.md) / [design-test-plan-template](references/design-test-plan-template.md) / [adr-template](references/adr-template.md) / [open-questions-template](references/open-questions-template.md)
 - `project-design-hub` スキル — プロジェクト固有の設計規約の差し込み口（あれば使う。ステップ1で起動）
 - `dig` スキル — 不明点の深掘り質問と dig log の記録（ステップ2・4で使用）
 - `contract-first-design` スキル — 契約による設計・副作用の隔離（ハブが示さない場合に、design のクラス設計で使う）

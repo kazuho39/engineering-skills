@@ -1,6 +1,30 @@
 # Specification Template（要件定義テンプレート）
 
-`specification` を作るときは、以下をベースに整理してください。
+`specification.md` を作るときは、以下をベースに整理してください。
+
+**ファイル構成**: 入口の `specification.md` の先頭に「要約」を置く。要件側の意思決定は `specification-adr.md`（[adr-template](adr-template.md)）、要件側の未確定事項は `specification-open-questions.md`（[open-questions-template](open-questions-template.md)）に分ける。**該当がなければファイルは作らない。** 構成の定義: [document-structure](document-structure.md)。
+
+## 冒頭: 要約
+
+タイトルと、design・dig-log へのリンクの直後に置く。
+
+```markdown
+## 要約
+
+**何を・誰のために・なぜ**: {2〜3文}
+
+- スコープ内の主な項目: {3〜5件}
+- スコープ外の主な項目: {2〜3件}
+- 受け入れ条件: {AC-001〜AC-0xx、N 件}
+
+### まず読むファイル（あるものだけ）
+
+| 知りたいこと | ファイル |
+|-------------|---------|
+| 要件側の意思決定（なぜそのスコープ・仕様にしたか） | [specification-adr.md](./specification-adr.md) |
+| 要件側の未確定事項 | [specification-open-questions.md](./specification-open-questions.md)（未解決 {N} 件） |
+| 技術設計 | [design.md](./design.md) |
+```
 
 ## 1. 背景
 
@@ -72,7 +96,7 @@
 ## 8. リスク / 懸念点
 
 - 想定リスク
-- 未確定事項
+- 未確定事項（件数が多い場合は `specification-open-questions.md` に移し、ここにはリンクだけを残す）
 
 ## 9. 受け入れ条件
 
@@ -83,3 +107,14 @@
 | AC-001 | （例）ログイン済みの一般顧客 | （例）注文フォームを送信する | （例）注文完了メッセージが表示される |
 | AC-002 | （例）未ログイン状態 | （例）注文ページにアクセスする | （例）ログイン画面にリダイレクトされる |
 | AC-003 | | | |
+
+## 変更履歴
+
+仕様の変更があった場合に、末尾に追記する。
+
+```markdown
+### YYYY-MM-DD: {変更の要約}
+- **変更前**: …
+- **変更後**: …
+- **理由**: …
+```

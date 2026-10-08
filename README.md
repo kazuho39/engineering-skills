@@ -12,7 +12,14 @@
 | [`dig`](skills/dig/SKILL.md) | プラン・設計・技術的意思決定を、共通理解に達するまで一問ずつ深掘りし、議論を dig log に記録する |
 | [`contract-first-design`](skills/contract-first-design/SKILL.md) | 実装前に、事前条件・事後条件・不変条件（契約表）と、副作用の隔離・イミュータブル設計で仕様を固める |
 | [`ddd-class-design`](skills/ddd-class-design/SKILL.md) | 値オブジェクト・エンティティ・Repository を中心とした DDD のクラス設計を支援する（実装例は PHP） |
-| [`spec-driven-development`](skills/spec-driven-development/SKILL.md) | 要件（specification）と技術設計（design）を段階的に作る仕様駆動開発フロー |
+| [`spec-driven-development`](skills/spec-driven-development/SKILL.md) | 要件（specification）と技術設計（design）を段階的に作る仕様駆動開発フロー。入口を短く保ち、クラス設計・テスト設計・ADR・未確定事項を別ファイルに分ける（[構成の定義](skills/spec-driven-development/references/document-structure.md)） |
+
+## コマンドとエージェント
+
+| 種別 | 名前 | 内容 |
+|---|---|---|
+| コマンド | [`dev-flow`](commands/dev-flow.md) | 作成済みの specification / design を起点に、実装（developer）→ レビュー（reviewer）→ QA（qa）を自動で通す。テストファースト |
+| エージェント | [`developer`](agents/developer.md) / [`reviewer`](agents/reviewer.md) / [`qa`](agents/qa.md) | `dev-flow` が起動する汎用のサブエージェント。プロジェクト固有の規約が要る場合は、コピーして書き換える |
 
 ### スキル間の関係
 
@@ -21,6 +28,9 @@ spec-driven-development
   ├─ dig                    … 不明点の深掘り（あれば使う）
   ├─ contract-first-design  … クラス設計の契約表（あれば使う）
   └─ project-design-hub     … プロジェクト固有の設計規約（あれば使う。無ければ既定で進む）
+
+dev-flow（コマンド）         … spec-driven-development の成果物（specification / design）を入力にする
+  └─ project-design-hub     … テスト実行コマンド・実装規約・レビュー観点（あれば使う）
 ```
 
 各スキルは、他のスキルが無くても単体で動くように書かれています。「あれば使う、無ければ本文の既定に従う」という関係です。
@@ -43,6 +53,14 @@ cp -R engineering-skills/skills/* ~/.claude/skills/
 ```bash
 mkdir -p <プロジェクト>/.claude/skills
 cp -R engineering-skills/skills/dig <プロジェクト>/.claude/skills/
+```
+
+`dev-flow` を使う場合は、コマンドとエージェントもコピーします（`dev-flow` は `developer` / `reviewer` / `qa` のエージェントを起動します）。
+
+```bash
+mkdir -p <プロジェクト>/.claude/commands <プロジェクト>/.claude/agents
+cp engineering-skills/commands/dev-flow.md <プロジェクト>/.claude/commands/
+cp engineering-skills/agents/*.md <プロジェクト>/.claude/agents/
 ```
 
 更新するときは、このリポジトリを `git pull` して、同じ手順でコピーし直します。
