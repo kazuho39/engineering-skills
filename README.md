@@ -1,9 +1,7 @@
 # engineering-skills
 
-設計・仕様策定を支援する、プロジェクトに依存しない汎用の [Claude Code](https://claude.com/claude-code) スキル集です。
+設計・仕様策定と、依存の脆弱性の確認を支援する、プロジェクトに依存しない汎用の [Claude Code](https://claude.com/claude-code) スキル集です。
 特定のフレームワークやプロジェクトの規約を前提とせず、案件ごとの違いは差し込み口（`project-design-hub`）で吸収します。
-
-> このリポジトリは**書き出し専用**です。スキルの実体は個人開発プロジェクト側で育て、スクリプトで一方向に書き出しています。このリポジトリのファイルを直接編集しても、次回の書き出しで上書きされます。
 
 ## スキル一覧
 
@@ -13,6 +11,7 @@
 | [`contract-first-design`](skills/contract-first-design/SKILL.md) | 実装前に、事前条件・事後条件・不変条件（契約表）と、副作用の隔離・イミュータブル設計で仕様を固める |
 | [`ddd-class-design`](skills/ddd-class-design/SKILL.md) | 値オブジェクト・エンティティ・Repository を中心とした DDD のクラス設計を支援する（実装例は PHP） |
 | [`spec-driven-development`](skills/spec-driven-development/SKILL.md) | 要件（specification）と技術設計（design）を段階的に作る仕様駆動開発フロー。入口を短く保ち、クラス設計・テスト設計・ADR・未確定事項を別ファイルに分ける（[構成の定義](skills/spec-driven-development/references/document-structure.md)） |
+| [`daily-vuln-briefing`](skills/daily-vuln-briefing/README.md) | CISA KEV と、リポジトリの依存の audit（composer / npm）から、プロファイル（対象リポジトリ・スタック）に関係する脆弱性をブリーフィング本文にまとめる。scheduled task から呼ぶ前提で、投稿先はタスク側で決める（セットアップは[README](skills/daily-vuln-briefing/README.md)） |
 
 ## コマンドとエージェント
 
@@ -34,7 +33,7 @@ dev-flow（コマンド）         … spec-driven-development の成果物（sp
 ```
 
 各スキルは、他のスキルが無くても単体で動くように書かれています。「あれば使う、無ければ本文の既定に従う」という関係です。
-`ddd-class-design` は他のスキルに依存しません。
+`ddd-class-design` と `daily-vuln-briefing` は他のスキルに依存しません。
 
 ## 使い方
 

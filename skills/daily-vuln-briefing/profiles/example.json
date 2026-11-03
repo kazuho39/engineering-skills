@@ -1,0 +1,11 @@
+{
+  "name": "my-project",
+  "repos": [
+    {"name": "my-app", "path": "~/work/my-app"}
+  ],
+  "stack": ["laravel", "php", "mysql", "aws"],
+  "kev_days": 1,
+  "audit_min_severity": "high",
+  "composer_runner": "docker",
+  "nvd_max_per_run": 8
+}
