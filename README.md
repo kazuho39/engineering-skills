@@ -82,10 +82,16 @@ cp engineering-skills/templates/project-design-hub/SKILL.md <プロジェクト>
 ```
 skills/       書き出された汎用スキル（直接編集しない）
 templates/    プロジェクトごとに複製して使う雛形
-  └─ project-design-hub/
+  ├─ project-design-hub/
+  └─ domain-understanding/
 ```
 
 `templates/` はスキルとして自動では有効になりません。コピーして初めて使われます。
+
+| 雛形 | 内容 |
+|---|---|
+| [`project-design-hub`](templates/project-design-hub/SKILL.md) | プロジェクト固有の設計規約をつなぐ、スキルの差し込み口 |
+| [`domain-understanding`](templates/domain-understanding/README.md) | ドメイン知識を整理する文書の雛形（ステークホルダーとビジネス全体像、業務フロー、ユビキタス言語集、概念モデル図、ビジネスルール一覧）。作る順番と各文書の用途は README を参照 |
 
 ## 設計方針
 
