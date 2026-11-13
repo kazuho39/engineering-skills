@@ -11,6 +11,7 @@
 | [`contract-first-design`](skills/contract-first-design/SKILL.md) | 実装前に、事前条件・事後条件・不変条件（契約表）と、副作用の隔離・イミュータブル設計で仕様を固める |
 | [`ddd-class-design`](skills/ddd-class-design/SKILL.md) | 値オブジェクト・エンティティ・Repository を中心とした DDD のクラス設計を支援する（実装例は PHP） |
 | [`spec-driven-development`](skills/spec-driven-development/SKILL.md) | 要件（specification）と技術設計（design）を段階的に作る仕様駆動開発フロー。入口を短く保ち、クラス設計・テスト設計・ADR・未確定事項を別ファイルに分ける（[構成の定義](skills/spec-driven-development/references/document-structure.md)） |
+| [`initiative-breakdown`](skills/initiative-breakdown/SKILL.md) | `spec-driven-development` の前段。ざっくりした大きめの開発要望を、ヒアリングで深掘りして全体像（`overview.md`）を合意し、機能単位に分割（`breakdown.md`）して、分割案を承認してから、1機能ずつ `spec-driven-development` に渡す。合意のゲートは全体像と分割案の2回（[全体像のテンプレート](skills/initiative-breakdown/references/overview-template.md) / [分割案のテンプレート](skills/initiative-breakdown/references/breakdown-template.md)） |
 | [`daily-vuln-briefing`](skills/daily-vuln-briefing/README.md) | CISA KEV と、リポジトリの依存の audit（composer / npm）から、プロファイル（対象リポジトリ・スタック）に関係する脆弱性をブリーフィング本文にまとめる。scheduled task から呼ぶ前提で、投稿先はタスク側で決める（セットアップは[README](skills/daily-vuln-briefing/README.md)） |
 
 ## コマンドとエージェント
@@ -23,6 +24,11 @@
 ### スキル間の関係
 
 ```
+initiative-breakdown        … 大きめの要望を全体像と分割案に整理する（spec-driven-development の前段）
+  ├─ dig                    … ヒアリングの深掘り（あれば使う）
+  ├─ project-design-hub     … プロジェクト固有の事情（あれば使う。無ければ既定で進む）
+  └─ 分割した1機能ごとに → spec-driven-development → dev-flow
+
 spec-driven-development
   ├─ dig                    … 不明点の深掘り（あれば使う）
   ├─ contract-first-design  … クラス設計の契約表（あれば使う）
